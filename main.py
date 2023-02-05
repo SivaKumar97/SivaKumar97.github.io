@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, Response
 from mysql_query import createIntialDatas,progress_update,importMvDetails, deleteExistFile, uploadLive,uploadProject, dropDataBase,addMvRow, getMovieDetails, updateMovieRow, searchMovieDetail,deleteMovieDetail
-from flask_cors import CORS
-app = Flask(__name__)
+from flask_cors import CORS,cross_origin
+from flask.helpers import send_from_directory
+app = Flask(__name__,static_folder='client/build')
 CORS(app)
 
 #Path API Route
@@ -11,6 +12,7 @@ def paths():
 
 #Create Database
 @app.route('/api/v1/creatInitial')
+@cross_origin()
 def createInitial():
     try :
         createIntialDatas()
@@ -24,6 +26,7 @@ def createInitial():
         'responseText': 'failure'
     }
 @app.route('/api/v1/dropDB')
+@cross_origin()
 def dropDB():
     try :
         dropDataBase()
@@ -37,6 +40,7 @@ def dropDB():
         'responseText': 'failure'
     }
 @app.route('/api/v1/addMvDetails', methods=['POST'])
+@cross_origin()
 def addMvDetails():
     payload = request.get_json()
     try:
@@ -52,6 +56,7 @@ def addMvDetails():
             'responseText': 'failure'
          }
 @app.route('/api/v1/getMvDetails')
+@cross_origin()
 def getMvDetails():
     field = request.args.get("field")
     type = request.args.get("type")
@@ -68,6 +73,7 @@ def getMvDetails():
             'responseText': 'failure'
          }
 @app.route('/api/v1/updateMvDetails', methods=['POST'])
+@cross_origin()
 def updateMvDetails():
     payload = request.get_json()
     try:
@@ -84,6 +90,7 @@ def updateMvDetails():
          }
 
 @app.route('/api/v1/searchMv')
+@cross_origin()
 def searchMvDetails():
     query = request.args.get("searchStr")
     try:
@@ -100,6 +107,7 @@ def searchMvDetails():
          }
 
 @app.route("/api/v1/deleteDv/<id>", methods=["DELETE"])
+@cross_origin()
 def deleteMvDetail(id):
     try:
         deleteMovieDetail(id)
@@ -114,6 +122,7 @@ def deleteMvDetail(id):
          }
 
 @app.route("/api/v1/exportMv", methods=["POST"])
+@cross_origin()
 def exportMvDetails():
     try:
         uploadLive()
@@ -128,6 +137,7 @@ def exportMvDetails():
         }
 
 @app.route("/api/v1/exportProject", methods=["POST"])
+@cross_origin()
 def exportProject():
     try:
         uploadProject()
@@ -142,6 +152,7 @@ def exportProject():
         }
 
 @app.route("/api/v1/importMv", methods=["POST"])
+@cross_origin()
 def importMv():
     try:
         mvDetails = importMvDetails()
@@ -156,6 +167,7 @@ def importMv():
         'responseText': 'failure'
         }
 @app.route("/api/v1/percentage")
+@cross_origin()
 def getPercentage():
     try:
         return Response(progress_update(), content_type='text/event-stream')
@@ -171,8 +183,10 @@ def getPercentage():
     return {
         'responseText': 'failure'
         }
-
-
+@app.route('/')
+@cross_origin()
+def serve():
+    return send_from_directory(app.static_folder,'index.html')
 
 if __name__ == '__main__':
-    app.run(debug=False,host='0.0.0.0')
+    app.run(debug=True)
