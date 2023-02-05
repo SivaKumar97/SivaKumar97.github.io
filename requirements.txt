@@ -58,7 +58,6 @@ progressbar==2.5
 protobuf==4.21.12
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio @ file:///C:/Users/shahin-zt381/Downloads/PyAudio-0.2.11-cp39-cp39-win_amd64.whl
 PyAutoGUI==0.9.53
 pybrowsers==0.4.1
 pycparser==2.21
@@ -72,7 +71,6 @@ pypiwin32==223
 PyRect==0.2.0
 PyScreeze==0.1.28
 PySocks==1.7.1
-pytesseract @ git+https://github.com/madmaze/pytesseract.git@a4c4f5faca5aaa18b3bcf5a5c86282948f6fdc45
 python-dateutil==2.8.2
 python-decouple==3.6
 python-dotenv==0.20.0
